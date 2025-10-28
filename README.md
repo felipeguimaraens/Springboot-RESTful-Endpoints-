@@ -10,3 +10,4 @@ Based on course: "Spring Boot REST APIs: Building Modern APIs with Spring Boot" 
 ## Resources
 - [Official repository](https://github.com/darbyluv2code/spring-boot-rest-apis)
 - [UDEMY](https://www.udemy.com/course/spring-boot-rest-apis/)
+- [Spring Initializer](https://start.spring.io/)
