@@ -45,6 +45,16 @@ public class BookController {
         }
     }
 
+    @PutMapping("/api/books/{title}")
+    public void updateBook(@PathVariable String title, @RequestBody Book updatedBook) {
+        for (int i = 0; i < books.size() ; i++) {
+            if (books.get(i).getTitle().equalsIgnoreCase(title)) {
+                books.set(i, updatedBook);
+                return ;
+            }
+        }
+    }
+
     private void initializeBooks() {
         books.addAll(List.of(
                 new Book("Game Programming in C++", "Sanjay Madhav", "Educational"),
