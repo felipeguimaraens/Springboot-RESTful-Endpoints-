@@ -1,6 +1,7 @@
 package com.example.Project02Books.controller;
 
 import com.example.Project02Books.entity.Book;
+import com.example.Project02Books.entity.BookRequest;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,14 +37,20 @@ public class BookController {
     }
 
     @PostMapping
-    public void createBook(@RequestBody Book newBook) {
-        boolean isNewBook = books
-                .stream()
-                .noneMatch(book -> book.getTitle().equalsIgnoreCase(newBook.getTitle()));
-
-        if (isNewBook) {
-            books.add(newBook);
+    public void createBook(@RequestBody BookRequest bookRequest) {
+        long id;
+        if (books.isEmpty()) {
+            id = 0;
+        } else {
+            id = books.get(books.size() - 1).getId();
         }
+
+        Book book = new Book (
+                id, bookRequest.getTitle(), bookRequest.getAuthor(),
+                bookRequest.getCategory(), bookRequest.getRating()
+        );
+
+        books.add(book);
     }
 
     @PutMapping("/{id}")
