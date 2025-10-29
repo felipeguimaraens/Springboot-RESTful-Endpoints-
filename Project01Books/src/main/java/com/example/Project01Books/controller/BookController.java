@@ -4,6 +4,7 @@ import com.example.Project01Books.entity.Book;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -17,10 +18,6 @@ public class BookController {
         initializeBooks();
     }
 
-    @GetMapping("/api/books")
-    public List<Book> getBooks() {
-        return books;
-    }
     @GetMapping("/api/books/title/{title}")
     public Book getBookByTitle(@PathVariable String title) {
         return books.stream()
@@ -29,6 +26,16 @@ public class BookController {
                 .orElse(null);
     }
 
+    @GetMapping("/api/books")
+    public List<Book> getBooks(@RequestParam(required = false) String category) {
+        if (category == null) {
+            return books;
+        }
+
+        return books.stream()
+                .filter(book -> book.getCategory().equalsIgnoreCase(category))
+                .toList();
+    }
 
     private void initializeBooks() {
         books.addAll(List.of(
