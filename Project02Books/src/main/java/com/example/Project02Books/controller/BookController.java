@@ -16,10 +16,10 @@ public class BookController {
         initializeBooks();
     }
 
-    @GetMapping("/{title}")
-    public Book getBookByTitle(@PathVariable String title) {
+    @GetMapping("/{id}")
+    public Book getBookById(@PathVariable int id) {
         return books.stream()
-                .filter(book -> book.getTitle().equalsIgnoreCase(title))
+                .filter(book -> book.getId() == id)
                 .findFirst()
                 .orElse(null);
     }
