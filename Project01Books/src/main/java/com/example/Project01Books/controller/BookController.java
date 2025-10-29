@@ -1,7 +1,9 @@
 package com.example.Project01Books.controller;
 
 import com.example.Project01Books.entity.Book;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -19,6 +21,14 @@ public class BookController {
     public List<Book> getBooks() {
         return books;
     }
+    @GetMapping("/api/books/title/{title}")
+    public Book getBookByTitle(@PathVariable String title) {
+        return books.stream()
+                .filter(book -> book.getTitle().equalsIgnoreCase(title))
+                .findFirst()
+                .orElse(null);
+    }
+
 
     private void initializeBooks() {
         books.addAll(List.of(
