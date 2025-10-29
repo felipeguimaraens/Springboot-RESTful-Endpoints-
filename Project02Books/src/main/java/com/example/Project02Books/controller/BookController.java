@@ -63,12 +63,12 @@ public class BookController {
 
     private void initializeBooks() {
         books.addAll(List.of(
-                new Book("Game Programming in C++", "Sanjay Madhav", "Educational"),
-                new Book("I, Robot", "Isaac Asimov", "Science Fiction"),
-                new Book("The Bicentennial Man", "Isaac Asimov", "Science Fiction"),
-                new Book("Neuromancer", "William Gibson", "Science Fiction"),
-                new Book("Game Programming Algorithms and Techniques", "Sanjay Madhav", "Educational"),
-                new Book("Game Programming Patterns", "Robert Nystrom", "Educational")
+                new Book(0, "Game Programming in C++", "Sanjay Madhav", "Educational", 10),
+                new Book(1, "I, Robot", "Isaac Asimov", "Science Fiction", 9),
+                new Book(2, "The Bicentennial Man", "Isaac Asimov", "Science Fiction", 7),
+                new Book(3, "Neuromancer", "William Gibson", "Science Fiction", 8),
+                new Book(4, "Game Programming Algorithms and Techniques", "Sanjay Madhav", "Educational", 9),
+                new Book(5, "Game Programming Patterns", "Robert Nystrom", "Educational", 8)
         ));
     }
 
