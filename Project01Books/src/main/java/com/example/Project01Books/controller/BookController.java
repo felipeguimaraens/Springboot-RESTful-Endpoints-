@@ -57,12 +57,7 @@ public class BookController {
 
     @DeleteMapping("/api/books/{title}")
     public void deleteBook(@PathVariable String title) {
-        for (int i = 0; i < books.size() ; i++) {
-            if (books.get(i).getTitle().equalsIgnoreCase(title)) {
-                books.remove(i);
-                return ;
-            }
-        }
+        books.removeIf(book -> book.getTitle().equalsIgnoreCase(title));
     }
 
     private void initializeBooks() {
