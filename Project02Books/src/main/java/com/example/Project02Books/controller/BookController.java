@@ -42,7 +42,7 @@ public class BookController {
         if (books.isEmpty()) {
             id = 0;
         } else {
-            id = books.get(books.size() - 1).getId();
+            id = books.get(books.size() - 1).getId() + 1;
         }
 
         Book book = convertToBook(id, bookRequest);
