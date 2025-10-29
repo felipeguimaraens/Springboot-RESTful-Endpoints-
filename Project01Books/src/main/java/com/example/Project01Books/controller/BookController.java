@@ -55,6 +55,16 @@ public class BookController {
         }
     }
 
+    @DeleteMapping("/api/books/{title}")
+    public void deleteBook(@PathVariable String title) {
+        for (int i = 0; i < books.size() ; i++) {
+            if (books.get(i).getTitle().equalsIgnoreCase(title)) {
+                books.remove(i);
+                return ;
+            }
+        }
+    }
+
     private void initializeBooks() {
         books.addAll(List.of(
                 new Book("Game Programming in C++", "Sanjay Madhav", "Educational"),
