@@ -45,11 +45,7 @@ public class BookController {
             id = books.get(books.size() - 1).getId();
         }
 
-        Book book = new Book (
-                id, bookRequest.getTitle(), bookRequest.getAuthor(),
-                bookRequest.getCategory(), bookRequest.getRating()
-        );
-
+        Book book = convertToBook(id, bookRequest);
         books.add(book);
     }
 
@@ -77,6 +73,13 @@ public class BookController {
                 new Book(4, "Game Programming Algorithms and Techniques", "Sanjay Madhav", "Educational", 9),
                 new Book(5, "Game Programming Patterns", "Robert Nystrom", "Educational", 8)
         ));
+    }
+
+    private Book convertToBook(long id, BookRequest bookRequest) {
+        return new Book(
+                id, bookRequest.getTitle(), bookRequest.getAuthor(),
+                bookRequest.getCategory(), bookRequest.getRating()
+        );
     }
 
 }
