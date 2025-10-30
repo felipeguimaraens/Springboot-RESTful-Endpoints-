@@ -4,6 +4,7 @@ import com.example.Project02Books.entity.Book;
 import com.example.Project02Books.entity.BookRequest;
 import jakarta.validation.constraints.Min;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class BookController {
                 .toList();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void createBook(@RequestBody BookRequest bookRequest) {
         long id = books.isEmpty()? 0 : books.getLast().getId() + 1;
@@ -60,6 +62,12 @@ public class BookController {
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable @Min(value = 0) long id) {
         books.removeIf(book -> book.getId() == id);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @GetMapping("/resource-not-found")
+    public void resourceNotFound() {
+        // Logic that returns a resource not found
     }
 
     private void initializeBooks() {
