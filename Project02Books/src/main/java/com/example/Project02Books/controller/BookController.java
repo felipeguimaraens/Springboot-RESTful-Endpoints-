@@ -38,14 +38,10 @@ public class BookController {
 
     @PostMapping
     public void createBook(@RequestBody BookRequest bookRequest) {
-        long id;
-        if (books.isEmpty()) {
-            id = 0;
-        } else {
-            id = books.get(books.size() - 1).getId() + 1;
-        }
+        long id = books.isEmpty()? 0 : books.getLast().getId() + 1;
 
         Book book = convertToBook(id, bookRequest);
+
         books.add(book);
     }
 
