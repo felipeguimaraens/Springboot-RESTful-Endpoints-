@@ -1,6 +1,8 @@
 package com.example.Project02Books.controller;
 
 import com.example.Project02Books.entity.Book;
+import com.example.Project02Books.entity.BookErrorResponse;
+import com.example.Project02Books.entity.BookNotFoundException;
 import com.example.Project02Books.entity.BookRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,7 +33,7 @@ public class BookController {
         return books.stream()
                 .filter(book -> book.getId() == id)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new BookNotFoundException("Book id not found - " + id));
     }
 
     @Operation(summary="Get books by category", description="Get all books within same category")
@@ -59,23 +62,28 @@ public class BookController {
 
     @Operation(summary="Update book", description="Update a book by id")
     @PutMapping("/{id}")
-    public void updateBook(@Parameter(description="Id of book to be updated")
+    public Book updateBook(@Parameter(description="Id of book to be updated")
             @PathVariable @Min(value = 0) long id, @RequestBody BookRequest bookRequest) {
         for (int i = 0; i < books.size() ; i++) {
             if (books.get(i).getId() == id) {
                 Book updatedBook = convertToBook(id, bookRequest);
                 books.set(i, updatedBook);
-                return ;
+                return updatedBook;
             }
         }
+        throw new BookNotFoundException("Book not ound - " + id);
     }
 
     @Operation(summary="Delete book", description="Delete a book by id")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteBook(@Parameter(description="Id of book to be deleted")
+    public Book deleteBook(@Parameter(description="Id of book to be deleted")
             @PathVariable @Min(value = 0) long id) {
-        books.removeIf(book -> book.getId() == id);
+        for (int i = 0; i < books.size() ; i++) {
+            if (books.get(i).getId() == id) {
+                return books.remove(i);
+            }
+        }
+        throw new BookNotFoundException("Book not found - " + id);
     }
 
     @Operation(summary="404 dummy page", description="Just return 404 as test")
@@ -101,6 +109,17 @@ public class BookController {
                 id, bookRequest.getTitle(), bookRequest.getAuthor(),
                 bookRequest.getCategory(), bookRequest.getRating()
         );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<BookErrorResponse> handleException(BookNotFoundException exc) {
+        BookErrorResponse error = new BookErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                exc.getMessage(),
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
 }
