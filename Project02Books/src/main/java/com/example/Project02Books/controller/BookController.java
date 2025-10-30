@@ -59,6 +59,7 @@ public class BookController {
         }
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable @Min(value = 0) long id) {
         books.removeIf(book -> book.getId() == id);
