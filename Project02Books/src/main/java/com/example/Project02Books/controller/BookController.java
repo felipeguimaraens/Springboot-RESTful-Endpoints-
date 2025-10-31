@@ -1,12 +1,23 @@
 package com.example.Project02Books.controller;
 
 import com.example.Project02Books.entity.Book;
+import com.example.Project02Books.entity.BookErrorResponse;
+import com.example.Project02Books.entity.BookNotFoundException;
+import com.example.Project02Books.entity.BookRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Tag(name="SpringBooks - Books API", description="Collection of APIs to operate books")
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -16,16 +27,20 @@ public class BookController {
         initializeBooks();
     }
 
-    @GetMapping("/{title}")
-    public Book getBookByTitle(@PathVariable String title) {
+    @Operation(summary="Get book by id", description="Retrieve a book by id")
+    @GetMapping("/{id}")
+    public Book getBookById(@Parameter(description="Optional query parameter")
+                                @PathVariable @Min(value = 0) long id) {
         return books.stream()
-                .filter(book -> book.getTitle().equalsIgnoreCase(title))
+                .filter(book -> book.getId() == id)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new BookNotFoundException("Book id not found - " + id));
     }
 
+    @Operation(summary="Get books by category", description="Get all books within same category")
     @GetMapping
-    public List<Book> getBooks(@RequestParam(required = false) String category) {
+    public List<Book> getBooks(@Parameter(description="Category of book to be retrieved")
+                                   @RequestParam(required = false) String category) {
         if (category == null) {
             return books;
         }
@@ -35,41 +50,67 @@ public class BookController {
                 .toList();
     }
 
+    @Operation(summary="Create a book", description="Create a new book")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void createBook(@RequestBody Book newBook) {
-        boolean isNewBook = books
-                .stream()
-                .noneMatch(book -> book.getTitle().equalsIgnoreCase(newBook.getTitle()));
+    public void createBook(@RequestBody BookRequest bookRequest) {
+        long id = books.isEmpty()? 0 : books.getLast().getId() + 1;
 
-        if (isNewBook) {
-            books.add(newBook);
-        }
+        Book book = convertToBook(id, bookRequest);
+
+        books.add(book);
     }
 
-    @PutMapping("/{title}")
-    public void updateBook(@PathVariable String title, @RequestBody Book updatedBook) {
+    @Operation(summary="Update book", description="Update a book by id")
+    @PutMapping("/{id}")
+    public Book updateBook(@Parameter(description="Id of book to be updated")
+            @PathVariable @Min(value = 0) long id,
+                           @Valid @RequestBody BookRequest bookRequest) {
         for (int i = 0; i < books.size() ; i++) {
-            if (books.get(i).getTitle().equalsIgnoreCase(title)) {
+            if (books.get(i).getId() == id) {
+                Book updatedBook = convertToBook(id, bookRequest);
                 books.set(i, updatedBook);
-                return ;
+                return updatedBook;
             }
         }
+        throw new BookNotFoundException("Book not ound - " + id);
     }
 
-    @DeleteMapping("/{title}")
-    public void deleteBook(@PathVariable String title) {
-        books.removeIf(book -> book.getTitle().equalsIgnoreCase(title));
+    @Operation(summary="Delete book", description="Delete a book by id")
+    @DeleteMapping("/{id}")
+    public Book deleteBook(@Parameter(description="Id of book to be deleted")
+            @PathVariable @Min(value = 0) long id) {
+        for (int i = 0; i < books.size() ; i++) {
+            if (books.get(i).getId() == id) {
+                return books.remove(i);
+            }
+        }
+        throw new BookNotFoundException("Book not found - " + id);
+    }
+
+    @Operation(summary="404 dummy page", description="Just return 404 as test")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @GetMapping("/resource-not-found")
+    public void resourceNotFound() {
+        // Logic that returns a resource not found
     }
 
     private void initializeBooks() {
         books.addAll(List.of(
-                new Book("Game Programming in C++", "Sanjay Madhav", "Educational"),
-                new Book("I, Robot", "Isaac Asimov", "Science Fiction"),
-                new Book("The Bicentennial Man", "Isaac Asimov", "Science Fiction"),
-                new Book("Neuromancer", "William Gibson", "Science Fiction"),
-                new Book("Game Programming Algorithms and Techniques", "Sanjay Madhav", "Educational"),
-                new Book("Game Programming Patterns", "Robert Nystrom", "Educational")
+                new Book(0, "Game Programming in C++", "Sanjay Madhav", "Educational", 10),
+                new Book(1, "I, Robot", "Isaac Asimov", "Science Fiction", 9),
+                new Book(2, "The Bicentennial Man", "Isaac Asimov", "Science Fiction", 7),
+                new Book(3, "Neuromancer", "William Gibson", "Science Fiction", 8),
+                new Book(4, "Game Programming Algorithms and Techniques", "Sanjay Madhav", "Educational", 9),
+                new Book(5, "Game Programming Patterns", "Robert Nystrom", "Educational", 8)
         ));
+    }
+
+    private Book convertToBook(long id, BookRequest bookRequest) {
+        return new Book(
+                id, bookRequest.getTitle(), bookRequest.getAuthor(),
+                bookRequest.getCategory(), bookRequest.getRating()
+        );
     }
 
 }
