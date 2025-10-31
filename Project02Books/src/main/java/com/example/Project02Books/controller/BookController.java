@@ -7,6 +7,7 @@ import com.example.Project02Books.entity.BookRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,8 @@ public class BookController {
     @Operation(summary="Update book", description="Update a book by id")
     @PutMapping("/{id}")
     public Book updateBook(@Parameter(description="Id of book to be updated")
-            @PathVariable @Min(value = 0) long id, @RequestBody BookRequest bookRequest) {
+            @PathVariable @Min(value = 0) long id,
+                           @Valid @RequestBody BookRequest bookRequest) {
         for (int i = 0; i < books.size() ; i++) {
             if (books.get(i).getId() == id) {
                 Book updatedBook = convertToBook(id, bookRequest);
@@ -109,17 +111,6 @@ public class BookController {
                 id, bookRequest.getTitle(), bookRequest.getAuthor(),
                 bookRequest.getCategory(), bookRequest.getRating()
         );
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<BookErrorResponse> handleException(BookNotFoundException exc) {
-        BookErrorResponse error = new BookErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                exc.getMessage(),
-                System.currentTimeMillis()
-        );
-
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
 }
