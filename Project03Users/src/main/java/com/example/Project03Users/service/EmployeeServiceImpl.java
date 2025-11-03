@@ -46,7 +46,8 @@ public class EmployeeServiceImpl implements  EmployeeService{
 
     @Override
     public Employee convertToEmployee(long id, EmployeeRequest employeeRequest) {
-        return new Employee();
+        return new Employee(id, employeeRequest.getFirstName(),
+                employeeRequest.getLastName(), employeeRequest.getEmail());
     }
 
     @Transactional
