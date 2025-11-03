@@ -53,4 +53,11 @@ public class EmployeeRestController {
                                    @Valid @RequestBody EmployeeRequest employeeRequest){
         return employeeService.update(employeeId, employeeRequest);
     }
+
+    @Operation(summary = "Delete single employee", description = "Delete a employee from database.")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{employeeId}")
+    public void deleteEmployee(@PathVariable @Min(value=1) long employeeId){
+        employeeService.deleteById(employeeId);
+    }
 }
