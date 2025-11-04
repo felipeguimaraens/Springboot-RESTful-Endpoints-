@@ -13,3 +13,6 @@ Based on course: "Spring Boot REST APIs: Building Modern APIs with Spring Boot" 
 - [Spring Initializer](https://start.spring.io/)
 - [JPA Query Methods](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html)
 - [Spring Security Reference](https://docs.spring.io/spring-security/reference/)
+- [BCrypt wikipedia](https://en.wikipedia.org/wiki/Bcrypt)
+- [Article: Why use BCrypt](https://danboterhoven.medium.com/why-you-should-use-bcrypt-to-hash-passwords-af330100b861)
+- [CrackStation - BCrypt ](https://crackstation.net/hashing-security.htm)
