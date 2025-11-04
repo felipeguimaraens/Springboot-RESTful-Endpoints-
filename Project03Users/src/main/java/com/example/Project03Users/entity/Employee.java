@@ -19,6 +19,15 @@ public class Employee {
     @Column(name="email")
     private String email;
 
+    public Employee() {}
+
+    public Employee(long id, String firstName, String lastName, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     public long getId() {
         return id;
     }
