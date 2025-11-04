@@ -40,16 +40,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(configurer ->
                 configurer
+                        .requestMatchers("/docs/**","/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
                         .requestMatchers(HttpMethod.POST, "/api/employees").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PUT, "/api/employees").hasRole("MANAGER")
+                        .requestMatchers(HttpMethod.PUT, "/api/employees/**").hasRole("MANAGER")
                         .requestMatchers(HttpMethod.DELETE, "/api/employees").hasRole("ADMIN"));
 
         http.httpBasic(Customizer.withDefaults());
         // Not required for REST APIs but recommended for HTML forms
         http.csrf(csrf -> csrf.disable());
-        
+
     return http.build();
     }
 }
