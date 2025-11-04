@@ -1,6 +1,5 @@
 package com.example.Project03Users.controller;
 
-import com.example.Project03Users.dao.EmployeeDAO;
 import com.example.Project03Users.entity.Employee;
 import com.example.Project03Users.request.EmployeeRequest;
 import com.example.Project03Users.service.EmployeeService;
