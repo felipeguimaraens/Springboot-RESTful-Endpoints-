@@ -1,6 +1,8 @@
 package com.example.Project04Todos.controller;
 
+import com.example.Project04Todos.request.AuthenticationRequest;
 import com.example.Project04Todos.request.RegisterRequest;
+import com.example.Project04Todos.response.AuthenticationResponse;
 import com.example.Project04Todos.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,5 +25,12 @@ public class AuthenticationController {
     @PostMapping("/register")
     public void register(@Valid @RequestBody RegisterRequest registerRequest) throws Exception {
         authenticationService.register(registerRequest);
+    }
+
+    @Operation(summary = "Login a user", description = "Submit email and password to authenticate user")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/login")
+    public AuthenticationResponse login(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
+        return authenticationService.login(authenticationRequest);
     }
 }
