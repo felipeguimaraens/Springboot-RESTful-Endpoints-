@@ -35,4 +35,29 @@ public class UserServiceImpl implements UserService{
                 user.getAuthorities().stream().map(auth -> (Authority) auth).toList()
         );
     }
+
+    @Override
+    public void deleteUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() ||
+                authentication.getPrincipal().equals("anonymousUser")) {
+            throw new AccessDeniedException("Authentication required");
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        userRepository.delete(user);
+    }
+
+    private boolean isLastAdmin(User user) {
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
+
+        if (isAdmin) {
+            long adminCount = userRepository.countAdminUsers();
+            return adminCount <= 1;
+        }
+
+        return false;
+    }
 }
