@@ -1,7 +1,7 @@
 package com.example.Project04Todos.service;
 
-import com.example.Project04Todos.entity.User;
+import com.example.Project04Todos.response.UserResponse;
 
 public interface UserService {
-    User getUserInfo();
+    UserResponse getUserInfo();
 }
