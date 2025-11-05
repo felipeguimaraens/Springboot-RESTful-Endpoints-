@@ -3,6 +3,7 @@ package com.example.Project04Todos.controller;
 import com.example.Project04Todos.response.UserResponse;
 import com.example.Project04Todos.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,5 +21,10 @@ public class UserController {
     @GetMapping("/info")
     public UserResponse getUserInfo() {
         return userService.getUserInfo();
+    }
+
+    @DeleteMapping
+    public void deleteUser() {
+        userService.deleteUser();
     }
 }
