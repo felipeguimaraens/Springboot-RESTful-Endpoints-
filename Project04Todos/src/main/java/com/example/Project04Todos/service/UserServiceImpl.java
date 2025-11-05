@@ -4,11 +4,13 @@ import com.example.Project04Todos.entity.Authority;
 import com.example.Project04Todos.entity.User;
 import com.example.Project04Todos.repository.UserRepository;
 import com.example.Project04Todos.response.UserResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -45,6 +47,10 @@ public class UserServiceImpl implements UserService{
         }
 
         User user = (User) authentication.getPrincipal();
+
+        if (isLastAdmin(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Admin cannot delete itself");
+        }
 
         userRepository.delete(user);
     }
