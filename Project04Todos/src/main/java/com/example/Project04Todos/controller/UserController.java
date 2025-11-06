@@ -1,12 +1,11 @@
 package com.example.Project04Todos.controller;
 
+import com.example.Project04Todos.request.PasswordUpdateRequest;
 import com.example.Project04Todos.response.UserResponse;
 import com.example.Project04Todos.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name="User REST API Endpoints", description = "Operations related to info about current user")
 @RestController
@@ -26,5 +25,10 @@ public class UserController {
     @DeleteMapping
     public void deleteUser() {
         userService.deleteUser();
+    }
+
+    @PutMapping("/password")
+    public void updatePassword(@Valid @RequestBody PasswordUpdateRequest passwordUpdateRequest) throws Exception {
+        userService.updatePassword(passwordUpdateRequest);
     }
 }
