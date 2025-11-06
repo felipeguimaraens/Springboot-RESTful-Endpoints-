@@ -20,3 +20,6 @@ Based on course: "Spring Boot REST APIs: Building Modern APIs with Spring Boot" 
 - [Article: Why use BCrypt](https://danboterhoven.medium.com/why-you-should-use-bcrypt-to-hash-passwords-af330100b861)
 - [CrackStation - BCrypt ](https://crackstation.net/hashing-security.htm)
 - [Jwt.IO - Token verification](https://www.jwt.io/)
+
+## Certificate
+- [UDEMY - Certificate](https://www.udemy.com/certificate/UC-02da4241-c9f6-482f-a966-5daa1b07683f/)
