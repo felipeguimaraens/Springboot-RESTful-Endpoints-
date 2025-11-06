@@ -56,6 +56,5 @@ public class AdminServiceImpl implements AdminService {
           user.getFirstName() + " " + user.getLastName(),
           user.getEmail(),
           user.getAuthorities().stream().map(auth -> (Authority) auth).toList());
-        );
     }
 }
