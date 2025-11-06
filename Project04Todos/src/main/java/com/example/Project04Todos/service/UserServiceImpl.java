@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
     @Transactional(readOnly = true)
     public UserResponse getUserInfo() {
         User user = findAuthenticatedUser.getAuthenticatedUser();
-        
+
         return new UserResponse(
                 user.getId(),
                 user.getFirstName() + " " + user.getLastName(),

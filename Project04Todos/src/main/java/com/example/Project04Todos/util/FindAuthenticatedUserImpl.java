@@ -18,6 +18,6 @@ public class FindAuthenticatedUserImpl implements FindAuthenticatedUser {
 
         User user = (User) authentication.getPrincipal();
 
-        return User;
+        return user;
     }
 }
