@@ -3,9 +3,12 @@
 
 Based on course: "Spring Boot REST APIs: Building Modern APIs with Spring Boot" created by Chad Darby and Eric Roby
 
-## Content
+## Projects
 
-
+1. [Books](https://github.com/felipeguimaraens/Springboot-RESTful-Endpoints-/tree/project01)
+2. [Books expanded](https://github.com/felipeguimaraens/Springboot-RESTful-Endpoints-/tree/project02)
+3. [Users](https://github.com/felipeguimaraens/Springboot-RESTful-Endpoints-/tree/project03)
+3. [TO-DOs list](https://github.com/felipeguimaraens/Springboot-RESTful-Endpoints-/tree/project04)
 
 ## Resources
 - [Official repository](https://github.com/darbyluv2code/spring-boot-rest-apis)
